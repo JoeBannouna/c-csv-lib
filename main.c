@@ -11,6 +11,11 @@ int main() {
   addRow(test_file_ptr, row2, 3);
   addRow(test_file_ptr, row3, 1);
 
-  printRows(test_file_ptr);
+  delRow(test_file_ptr, 1);
+  
+  // delCSVFILE(test_file_ptr);
+  // test_file_ptr = NULL;
+
+  // printRows(test_file_ptr);
   saveRows(test_file_ptr);
 }
