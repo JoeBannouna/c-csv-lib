@@ -1,3 +1,6 @@
+#ifndef CSVFILE_STRUCT_INCLUDE
+#define CSVFILE_STRUCT_INCLUDE
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +29,8 @@ void addRow(CSVFILE* file_ptr, char** row, int row_size);
 
 void insertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index);
 
+void readRows(CSVFILE* file_ptr);
+
 void printRows(CSVFILE* file_ptr);
 
 void saveRows(CSVFILE* file_ptr);
@@ -33,3 +38,5 @@ void saveRows(CSVFILE* file_ptr);
 void delRow(CSVFILE* file_ptr, int row_index);
 
 void delCSVFILE(CSVFILE* file_ptr);
+
+#endif

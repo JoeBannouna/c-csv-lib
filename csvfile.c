@@ -1,5 +1,7 @@
 #include "csvfile.h"
 
+#include "vector.h"
+
 CSVFILE* initCSVFILE(char* filename) {
   CSVFILE* file = malloc(sizeof(CSVFILE));
 
@@ -88,7 +90,7 @@ void addRow(CSVFILE* file_ptr, char** row, int row_size) {
     int word_length = strnlen(word, MAX_COL_SIZE);
 
     new_row[i] = malloc(sizeof(char) * (word_length + 1));
-    strncpy(new_row[i], word, word_length);
+    strncpy(new_row[i], word, word_length + 1);
   }
 
   // Make space for new row
@@ -149,6 +151,68 @@ void insertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index) {
   // Add the new row
   file_ptr->rows[row_index] = new_row;
   insertRowSize(file_ptr, row_size, row_index);
+}
+
+void readRows(CSVFILE* file_ptr) {
+  FILE* file = fopen(file_ptr->filename, "r");
+
+  if (file != NULL) {
+    char ch = 0;
+
+    int current_row_size = 1;
+    char** current_row = malloc(sizeof(char*) * current_row_size);
+
+    CharVec* current_word = initCharVec(1);
+    // printf("length is %d\n", current_word->length);
+
+    while (!feof(file)) {
+      ch = fgetc(file);
+
+      if (ch == ',') {
+        // Next word
+        if (getStringLength(current_word) != 0) {
+          current_row[current_row_size - 1] = current_word->ptr;
+
+          free(current_word);
+          current_word = initCharVec(1);
+
+          current_row_size++;
+          current_row = realloc(current_row, sizeof(char*) * current_row_size);
+        }
+      } else if (ch == '\n') {
+        // New line
+        if (getStringLength(current_word) != 0) {
+          current_row[current_row_size - 1] = current_word->ptr;
+          free(current_word);
+          current_word = initCharVec(1);
+        } else {
+          current_row_size--;
+
+          current_row = realloc(current_row, sizeof(char*) * current_row_size);
+        }
+
+        addRow(file_ptr, current_row, current_row_size);
+
+        // Free dangling memory
+        for (int i = 0; i < current_row_size; i++) {
+          free(current_row[i]);
+        }
+        free(current_row);
+
+        current_row_size = 1;
+        current_row = malloc(sizeof(char*) * current_row_size);
+      } else {
+        // Normal character
+        addChar(current_word, ch);
+      }
+    }
+
+    freeCharVec(current_word);
+
+    fclose(file);
+  } else {
+    printf("Could not open file.\n");
+  }
 }
 
 void printRows(CSVFILE* file_ptr) {
