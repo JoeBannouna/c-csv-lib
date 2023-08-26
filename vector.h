@@ -10,12 +10,12 @@ typedef struct CharVec {
   char* ptr;
 } CharVec;
 
-CharVec* initCharVec(int length);
+CharVec* CVinitCharVec(int length);
 
-int getStringLength(CharVec* vec_ptr);
+int CVgetStringLength(CharVec* vec_ptr);
 
-bool addChar(CharVec* vec_ptr, char ch);
+bool CVaddChar(CharVec* vec_ptr, char ch);
 
-bool freeCharVec(CharVec* vec_ptr);
+bool CVfreeCharVec(CharVec* vec_ptr);
 
 #endif

@@ -1,6 +1,6 @@
 #include "vector.h"
 
-CharVec* initCharVec(int length) {
+CharVec* CVinitCharVec(int length) {
   CharVec* vec_ptr = malloc(sizeof(CharVec));
   vec_ptr->length = 1;
   vec_ptr->current_max_size = 1;
@@ -11,9 +11,9 @@ CharVec* initCharVec(int length) {
   // vec_ptr->ptr[length - 1] = '\0';
 }
 
-int getStringLength(CharVec* vec_ptr) { return vec_ptr->length - 1; }
+int CVgetStringLength(CharVec* vec_ptr) { return vec_ptr->length - 1; }
 
-bool addChar(CharVec* vec_ptr, char ch) {
+bool CVaddChar(CharVec* vec_ptr, char ch) {
   if (vec_ptr->length == vec_ptr->current_max_size) {
     vec_ptr->current_max_size *= 2;
 
@@ -33,7 +33,7 @@ bool addChar(CharVec* vec_ptr, char ch) {
   return true;
 }
 
-bool freeCharVec(CharVec* vec_ptr) {
+bool CVfreeCharVec(CharVec* vec_ptr) {
   free(vec_ptr->ptr);
   free(vec_ptr);
 

@@ -16,23 +16,23 @@ char* generateRandomString(int length, char* string) {
 int main() {
   srand(time(NULL));
 
-  CSVFILE* seeding_data_ptr = initCSVFILE("test");
+  CSVFILE* seeding_data_ptr = CSVFinit("test");
 
   // for (int i = 0; i < 100; i++) {
   //   char test_string[10];
   //   generateRandomString(10, test_string);
 
   //   char* row[] = {test_string};
-  //   addRow(seeding_data_ptr, row, 1);
+  //   CSVFaddRow(seeding_data_ptr, row, 1);
   // }
 
-  // saveRows(seeding_data_ptr);
+  // CSVFsaveRows(seeding_data_ptr);
 
-  // delCSVFILE(seeding_data_ptr);
+  // CSVFfreeMem(seeding_data_ptr);
 
-  readRows(seeding_data_ptr);
+  CSVFreadRows(seeding_data_ptr);
 
   char* test_row[] = {"something", "lol", "hamada"};
-  addRow(seeding_data_ptr, test_row, 3);
-  printRows(seeding_data_ptr);
+  CSVFaddRow(seeding_data_ptr, test_row, 3);
+  CSVFprintRows(seeding_data_ptr);
 }

@@ -2,7 +2,7 @@
 
 #include "vector.h"
 
-CSVFILE* initCSVFILE(char* filename) {
+CSVFILE* CSVFinit(char* filename) {
   CSVFILE* file = malloc(sizeof(CSVFILE));
 
   file->rows = NULL;
@@ -22,7 +22,7 @@ CSVFILE* initCSVFILE(char* filename) {
   return file;
 }
 
-void addRowSize(CSVFILE* file_ptr, int size) {
+void CSVFaddRowSize(CSVFILE* file_ptr, int size) {
   int* temp_sizes = file_ptr->rows_sizes;
   file_ptr->rows_sizes = malloc(sizeof(int) * file_ptr->rows_num);
 
@@ -37,7 +37,7 @@ void addRowSize(CSVFILE* file_ptr, int size) {
   file_ptr->rows_sizes[file_ptr->rows_num - 1] = size;
 }
 
-void insertRowSize(CSVFILE* file_ptr, int size, int row_index) {
+void CSVFinsertRowSize(CSVFILE* file_ptr, int size, int row_index) {
   int* temp_sizes = file_ptr->rows_sizes;
   file_ptr->rows_sizes = malloc(sizeof(int) * file_ptr->rows_num);
 
@@ -55,7 +55,7 @@ void insertRowSize(CSVFILE* file_ptr, int size, int row_index) {
   file_ptr->rows_sizes[row_index] = size;
 }
 
-void delRowSize(CSVFILE* file_ptr, int index) {
+void CSVFdelRowSize(CSVFILE* file_ptr, int index) {
   int* temp_sizes = file_ptr->rows_sizes;
   file_ptr->rows_sizes = malloc(sizeof(int) * file_ptr->rows_num);
 
@@ -73,13 +73,13 @@ void delRowSize(CSVFILE* file_ptr, int index) {
   }
 }
 
-void printRowSizes(CSVFILE* file_ptr) {
+void CSVFprintRowsSizes(CSVFILE* file_ptr) {
   for (int i = 0; i < file_ptr->rows_num; i++) {
     printf("%d\n", file_ptr->rows_sizes[i]);
   }
 }
 
-void addRow(CSVFILE* file_ptr, char** row, int row_size) {
+void CSVFaddRow(CSVFILE* file_ptr, char** row, int row_size) {
   file_ptr->rows_num += 1;
 
   // Make new row
@@ -108,10 +108,10 @@ void addRow(CSVFILE* file_ptr, char** row, int row_size) {
 
   // Add the new row
   file_ptr->rows[file_ptr->rows_num - 1] = new_row;
-  addRowSize(file_ptr, row_size);
+  CSVFaddRowSize(file_ptr, row_size);
 }
 
-void insertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index) {
+void CSVFinsertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index) {
   // Check that the index isn't too high
   if (row_index > file_ptr->rows_num) {
     printf("Error: INDEX OF ROW TO INSERT IS TOO HIGH\n");
@@ -150,10 +150,10 @@ void insertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index) {
 
   // Add the new row
   file_ptr->rows[row_index] = new_row;
-  insertRowSize(file_ptr, row_size, row_index);
+  CSVFinsertRowSize(file_ptr, row_size, row_index);
 }
 
-void readRows(CSVFILE* file_ptr) {
+void CSVFreadRows(CSVFILE* file_ptr) {
   FILE* file = fopen(file_ptr->filename, "r");
 
   if (file != NULL) {
@@ -162,7 +162,7 @@ void readRows(CSVFILE* file_ptr) {
     int current_row_size = 1;
     char** current_row = malloc(sizeof(char*) * current_row_size);
 
-    CharVec* current_word = initCharVec(1);
+    CharVec* current_word = CVinitCharVec(1);
     // printf("length is %d\n", current_word->length);
 
     while (!feof(file)) {
@@ -170,28 +170,28 @@ void readRows(CSVFILE* file_ptr) {
 
       if (ch == ',') {
         // Next word
-        if (getStringLength(current_word) != 0) {
+        if (CVgetStringLength(current_word) != 0) {
           current_row[current_row_size - 1] = current_word->ptr;
 
           free(current_word);
-          current_word = initCharVec(1);
+          current_word = CVinitCharVec(1);
 
           current_row_size++;
           current_row = realloc(current_row, sizeof(char*) * current_row_size);
         }
       } else if (ch == '\n') {
         // New line
-        if (getStringLength(current_word) != 0) {
+        if (CVgetStringLength(current_word) != 0) {
           current_row[current_row_size - 1] = current_word->ptr;
           free(current_word);
-          current_word = initCharVec(1);
+          current_word = CVinitCharVec(1);
         } else {
           current_row_size--;
 
           current_row = realloc(current_row, sizeof(char*) * current_row_size);
         }
 
-        addRow(file_ptr, current_row, current_row_size);
+        CSVFaddRow(file_ptr, current_row, current_row_size);
 
         // Free dangling memory
         for (int i = 0; i < current_row_size; i++) {
@@ -203,11 +203,11 @@ void readRows(CSVFILE* file_ptr) {
         current_row = malloc(sizeof(char*) * current_row_size);
       } else {
         // Normal character
-        addChar(current_word, ch);
+        CVaddChar(current_word, ch);
       }
     }
 
-    freeCharVec(current_word);
+    CVfreeCharVec(current_word);
 
     fclose(file);
   } else {
@@ -215,7 +215,7 @@ void readRows(CSVFILE* file_ptr) {
   }
 }
 
-void printRows(CSVFILE* file_ptr) {
+void CSVFprintRows(CSVFILE* file_ptr) {
   for (int i = 0; i < file_ptr->rows_num; i++) {
     for (int k = 0; k < file_ptr->rows_sizes[i]; k++) {
       printf("%s", file_ptr->rows[i][k]);
@@ -226,7 +226,7 @@ void printRows(CSVFILE* file_ptr) {
   }
 }
 
-void saveRows(CSVFILE* file_ptr) {
+void CSVFsaveRows(CSVFILE* file_ptr) {
   FILE* file = fopen(file_ptr->filename, "w");
 
   if (file != NULL) {
@@ -245,7 +245,7 @@ void saveRows(CSVFILE* file_ptr) {
   }
 }
 
-void delRow(CSVFILE* file_ptr, int row_index) {
+void CSVFdelRow(CSVFILE* file_ptr, int row_index) {
   int row_words_num = file_ptr->rows_sizes[row_index];
 
   file_ptr->rows_num -= 1;
@@ -254,7 +254,7 @@ void delRow(CSVFILE* file_ptr, int row_index) {
     free(file_ptr->rows[row_index][i]);
   }
 
-  delRowSize(file_ptr, row_index);
+  CSVFdelRowSize(file_ptr, row_index);
 
   free(file_ptr->rows[row_index]);
 
@@ -277,13 +277,13 @@ void delRow(CSVFILE* file_ptr, int row_index) {
   }
 }
 
-void delCSVFILE(CSVFILE* file_ptr) {
+void CSVFfreeMem(CSVFILE* file_ptr) {
   // Free & delete filename
   free(file_ptr->filename);
 
   // Free & delete all rows
   for (int i = file_ptr->rows_num - 1; i >= 0; i--) {
-    delRow(file_ptr, i);
+    CSVFdelRow(file_ptr, i);
   }
 
   free(file_ptr->rows);

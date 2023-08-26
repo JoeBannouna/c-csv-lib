@@ -15,28 +15,29 @@ typedef struct CSVFILE {
   int* rows_sizes;
 } CSVFILE;
 
-CSVFILE* initCSVFILE(char* filename);
+// Initializes a new CSVFile struct
+CSVFILE* CSVFinit(char* filename);
 
-void addRowSize(CSVFILE* file_ptr, int size);
+void CSVFaddRowSize(CSVFILE* file_ptr, int size);
 
-void insertRowSize(CSVFILE* file_ptr, int size, int row_index);
+void CSVFinsertRowSize(CSVFILE* file_ptr, int size, int row_index);
 
-void delRowSize(CSVFILE* file_ptr, int index);
+void CSVFdelRowSize(CSVFILE* file_ptr, int index);
 
-void printRowSizes(CSVFILE* file_ptr);
+void CSVFprintRows(CSVFILE* file_ptr);
 
-void addRow(CSVFILE* file_ptr, char** row, int row_size);
+void CSVFaddRow(CSVFILE* file_ptr, char** row, int row_size);
 
-void insertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index);
+void CSVFinsertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index);
 
-void readRows(CSVFILE* file_ptr);
+void CSVFreadRows(CSVFILE* file_ptr);
 
-void printRows(CSVFILE* file_ptr);
+void CSVFprintRowsSizes(CSVFILE* file_ptr);
 
-void saveRows(CSVFILE* file_ptr);
+void CSVFsaveRows(CSVFILE* file_ptr);
 
-void delRow(CSVFILE* file_ptr, int row_index);
+void CSVFdelRow(CSVFILE* file_ptr, int row_index);
 
-void delCSVFILE(CSVFILE* file_ptr);
+void CSVFfreeMem(CSVFILE* file_ptr);
 
 #endif
