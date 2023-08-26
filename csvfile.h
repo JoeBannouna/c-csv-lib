@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,11 +16,15 @@ CSVFILE* initCSVFILE(char* filename);
 
 void addRowSize(CSVFILE* file_ptr, int size);
 
+void insertRowSize(CSVFILE* file_ptr, int size, int row_index);
+
 void delRowSize(CSVFILE* file_ptr, int index);
 
 void printRowSizes(CSVFILE* file_ptr);
 
 void addRow(CSVFILE* file_ptr, char** row, int row_size);
+
+void insertRow(CSVFILE* file_ptr, char** row, int row_size, int row_index);
 
 void printRows(CSVFILE* file_ptr);
 

@@ -1,21 +1,33 @@
+#include <time.h>
+
 #include "csvfile.h"
 
+// Takes in the full length of char including null terminator, output is a
+// (length - 1) long random string
+char* generateRandomString(int length, char* string) {
+
+  for (int i = 0; i < length - 1; i++) {
+    int randInt = rand() % 26;
+    string[i] = 'a' + randInt;
+  }
+
+  string[length - 1] = '\0';
+}
+
 int main() {
-  CSVFILE* test_file_ptr = initCSVFILE("test1");
+  srand(time(NULL));
 
-  char* row1[] = {"hello", "lol"};
-  char* row2[] = {"omg", "o", "WOW"};
-  char* row3[] = {"holy"};
+  CSVFILE* seeding_data_ptr = initCSVFILE("seed_data");
 
-  addRow(test_file_ptr, row1, 2);
-  addRow(test_file_ptr, row2, 3);
-  addRow(test_file_ptr, row3, 1);
+  for (int i = 0; i < 100; i++) {
+    char test_string[10];
+    generateRandomString(10, test_string);
 
-  delRow(test_file_ptr, 1);
+    char* row[] = {test_string};
+    addRow(seeding_data_ptr, row, 1);
+  }
+
+  saveRows(seeding_data_ptr);
   
-  // delCSVFILE(test_file_ptr);
-  // test_file_ptr = NULL;
-
-  // printRows(test_file_ptr);
-  saveRows(test_file_ptr);
+  delCSVFILE(seeding_data_ptr);
 }
